@@ -117,4 +117,4 @@ run_test()
     fi
 }
 
-run_test 1 1 "This is a comment"
+run_test 1 2 "This is a comment"
