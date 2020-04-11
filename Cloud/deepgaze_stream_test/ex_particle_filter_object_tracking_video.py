@@ -32,8 +32,7 @@ import sys
 import time
 
 #Set to true if you want to use the webcam instead of the video.
-#In this case you have to provide a valid tamplate, it can be
-#a solid color you want to track or a frame containint your face.
+
 #Substitute the frame to the default template.png.
 USE_WEBCAM = True
 
