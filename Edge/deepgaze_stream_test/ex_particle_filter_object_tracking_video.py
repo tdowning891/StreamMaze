@@ -154,8 +154,8 @@ video_capture.release()
 out_motion.release()
 
 import os 
-command = "du /home/parallels/deepgaze/stream_test/out_all.avi | awk '{printf $1}'"
+command = "du ~/StreamMaze/Edge/python_object_detect/out_all.avi | awk '{printf $1}'"
 out_all = os.popen(command).read()
-command = "du /home/parallels/deepgaze/stream_test/out_motion.avi | awk '{printf $1}'"
+command = "du ~/StreamMaze/Edge/python_object_detect/out_motion.avi | awk '{printf $1}'"
 out_motion = os.popen(command).read()
 print(res_h,"x",res_v,",",count_frames_all,",",count_frames_motion, ",", out_all, ",", out_motion)
