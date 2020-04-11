@@ -6,34 +6,50 @@ local_phone="http://admin:admin@192.168.1.83:8554/live"
 local_ipad="http://admin:admin@192.168.1.73:8555/live"
 local_phone2="http://admin:admin@192.168.1.86:8556/live"
 
-forward_phone="http://admin:admin@81.157.199.17:8554/live"
-forward_ipad="http://admin:admin@81.157.199.17:8555/live"
-forward_phone2="http://admin:admin@81.157.199.17:8556/live"
+forward_phone="http://admin:admin@86.157.196.185:8554/live"
+forward_ipad="http://admin:admin@86.157.196.185:8555/live"
+forward_phone2="http://admin:admin@86.157.196.185:8556/live"
 
 test_stream () 
 {
-    # echo "1:" $1 "/n2:" $2 "/n3:" $3 "/n4:" $4 "/n5:" $5
+    # Variable Meanings:
+    #     1 = the strem number
+    #     2 = local webcam stream
+    #     3 = remote webcam stream
+    #     4 = The number of streams being tested
+    #     5 = edge command to run test
+    #     6 = edge location of output file 
+    #     7 = this is a comment on the testing
+    #     8 = cloud command to run test
+    #     9 = cloud location of output file
+    
 
+    # Pull the latest version of Stream Maze on Edge and Cloud
+    echo "Insuring latest version of StreamMaze is on Edge and Cloud"
+    ssh $edge "docker exec test3 bash -c 'cd ~/StreamMaze; git pull'"
+    ssh -X -i $cloud_key $cloud "docker exec test3 bash -c 'cd ~/StreamMaze; git pull'"
+
+    echo "Starting Testing"
     #Measure the number of frames captured on local device
     python3 ./stream_frames.py $2 > frames_captured.txt &
     P1=$!
     #open tream on the edge
-    ssh -X $edge "$5 $2 > res$1.txt" &
+    ssh $edge "docker exec test3 bash -c '$5 $2 > res$1.txt'" &
     P2=$!
     #open tream on the cloud,ue the webcam
-    ssh -X -i $cloud_key $cloud "$5 $3> res$1.txt" &
+    # ssh -X -i $cloud_key $cloud "$5 $3> res$1.txt" &
+    ssh -X -i $cloud_key $cloud "docker exec test3 bash -c '$8 $3 > res$1.txt'" &
     P3=$!
 
     #wait for all processes
     wait $P1 $P2 $P3
     frames_captured=$(cat frames_captured.txt)
 
-    res=$(ssh -X $edge "cat $6res$1.txt && rm $6res$1.txt")
-    res1=$(ssh -X -i $cloud_key $cloud "cat $6res$1.txt && rm $6res$1.txt")
+    res=$(ssh $edge "docker exec test3 bash -c 'cat $6res$1.txt && rm $6res$1.txt'")
+    # res1=$(ssh -X -i $cloud_key $cloud "cat $6res$1.txt && rm $6res$1.txt")
+    res1=$(ssh -X -i $cloud_key $cloud "docker exec test3 bash -c 'cat $9res$1.txt && rm $9res$1.txt'")
     
-    # time=`(time scp -i $cloud_key ./edge_stream_out/out_all.avi  $cloud:~/deepgaze/stream_tet/out_all_edge.avi) 2>&1 | grep real | awk -F'[m]+' '/^real/ {print $2}'`
-
-    echo $comment $4, $1,$frames_captured, $res,$res1
+    echo $7 $4, $1,$frames_captured, $res,$res1
 }
 run_test()
 {
@@ -42,8 +58,12 @@ run_test()
     if (($2 == 1))
     then 
         echo "Testing motion detection"
-        cmd="cd ~/deepgaze/stream_test/; python3 ex_particle_filter_object_tracking_video.py"
-        cmd2="~/deepgaze/stream_test/"
+        # cmd="cd ~/deepgaze/stream_test/; python3 ex_particle_filter_object_tracking_video.py"
+        # cmd2="~/deepgaze/stream_test/"
+        cmd="cd ~/StreamMaze/Edge/deepgaze_stream_test/; python3 ex_particle_filter_object_tracking_video.py"
+        cmd_c="cd ~/StreamMaze/Cloud/deepgaze_stream_test/; python3 ex_particle_filter_object_tracking_video.py"
+        cmd2="~/StreamMaze/Edge/deepgaze_stream_test/"
+        cmd2_c="~/StreamMaze/Cloud/deepgaze_stream_test/"
     elif (($2 == 2))
     then
         echo "Testing face detection"
@@ -63,9 +83,9 @@ run_test()
     fi
 
     echo "Starting with one stream"
-    for i in {1..3}
+    for i in {1..1}
     do 
-        test_stream 1 $local_phone $forward_phone 1 "$cmd" "$cmd2" "$comment"
+        test_stream 1 $local_phone $forward_phone 1 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"
     done 
 
     if(($1 > 1))
@@ -97,4 +117,4 @@ run_test()
     fi
 }
 
-run_test 3 2 "2 Speed"
+run_test 1 1 "This is a comment"

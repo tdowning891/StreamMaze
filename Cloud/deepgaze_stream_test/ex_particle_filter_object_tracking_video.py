@@ -143,8 +143,8 @@ while(timer < 30):
 
     #Showing the frame and waiting
     #for the exit command
-    cv2.imshow('Original Cloud', frame) #show on window
-    cv2.imshow('Mask Cloud', frame_mask) #show on window
+    # cv2.imshow('Original Cloud', frame) #show on window
+    # cv2.imshow('Mask Cloud', frame_mask) #show on window
     if cv2.waitKey(1) & 0xFF == ord('q'): break #Exit when Q is pressed
     end = time.time()
     timer = round(end-now)
