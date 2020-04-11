@@ -55,21 +55,21 @@ while (timer < 30):
     out_all.write(frame)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    faces = faceCascade.detectMultiScale(
+    objects = faceCascade.detectMultiScale(
         gray,
         scaleFactor=1.1,
         minNeighbors=5,
         minSize=(30, 30) 
     )
-    if len(faces) > 0:
+    if len(objects) > 0:
 
-        # Draw a rectangle around the faces
-        for (x, y, w, h) in faces:
+        # Draw a rectangle around the objects
+        for (x, y, w, h) in objects:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-        if anterior != len(faces):
-            anterior = len(faces)
-            log.info("faces: "+str(len(faces))+" at "+str(dt.datetime.now()))
+        if anterior != len(objects):
+            anterior = len(objects)
+            log.info("objects: "+str(len(objects))+" at "+str(dt.datetime.now()))
         
         #save video output file that only shows motion
         out_motion.write(frame)
@@ -97,8 +97,9 @@ out_motion.release()
 cv2.destroyAllWindows()
 
 import os
-command = "du ~/python_face_detect/out_all.avi | awk '{printf $1}'"
+
+command = "du ~/StreamMaze/Edge/python_object_detect/out_all.avi | awk '{printf $1}'"
 out_all = os.popen(command).read()
-command = "du ~/python_face_detect/out_motion.avi | awk '{printf $1}'"
+command = "du ~/StreamMaze/Edge/python_object_detect/out_motion.avi | awk '{printf $1}'"
 out_motion = os.popen(command).read()
 print(res_h,"x",res_v,",",count_frames_all,",",count_frames_motion, ",", out_all, ",", out_motion)

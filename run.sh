@@ -36,7 +36,7 @@ test_stream ()
     #open tream on the edge
     ssh $edge "docker exec test3 bash -c '$5 $2 > res$1.txt'" &
     P2=$!
-    #open tream on the cloud,ue the webcam
+    #open stream on the cloud,ue the webcam
     # ssh -X -i $cloud_key $cloud "$5 $3> res$1.txt" &
     ssh -X -i $cloud_key $cloud "docker exec test3 bash -c '$8 $3 > res$1.txt'" &
     P3=$!
@@ -58,17 +58,17 @@ run_test()
     if (($2 == 1))
     then 
         echo "Testing motion detection"
-        # cmd="cd ~/deepgaze/stream_test/; python3 ex_particle_filter_object_tracking_video.py"
-        # cmd2="~/deepgaze/stream_test/"
         cmd="cd ~/StreamMaze/Edge/deepgaze_stream_test/; python3 ex_particle_filter_object_tracking_video.py"
         cmd_c="cd ~/StreamMaze/Cloud/deepgaze_stream_test/; python3 ex_particle_filter_object_tracking_video.py"
         cmd2="~/StreamMaze/Edge/deepgaze_stream_test/"
         cmd2_c="~/StreamMaze/Cloud/deepgaze_stream_test/"
     elif (($2 == 2))
     then
-        echo "Testing face detection"
-        cmd="cd ~/python_face_detect/; python3 facedetect.py"
-        cmd2="~/python_face_detect/"
+        echo "Testing object detection"
+        cmd="cd ~/StreamMaze/Edge/python_object_detect/; python3 objectdetect.py"
+        cmd_c="cd ~/StreamMaze/Cloud/python_object_detect/; python3 objectdetect.py"
+        cmd2="~/StreamMaze/Edge/python_object_detect/"
+        cmd2_c="~/StreamMaze/Cloud/python_object_detect/"
     else
         echo "Please select a valid test"
         return
@@ -93,9 +93,9 @@ run_test()
         echo "Starting with two streams"
         for i in {1..3}
         do 
-            test_stream 1 $local_phone $forward_phone 2 "$cmd" "$cmd2" "$comment"&
+            test_stream 1 $local_phone $forward_phone 2 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P1=$!
-            test_stream 2 $local_ipad $forward_ipad 2 "$cmd" "$cmd2" "$comment"&
+            test_stream 2 $local_ipad $forward_ipad 2 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P2=$!
             wait $P1 $P2
         done 
@@ -106,11 +106,11 @@ run_test()
         echo "Starting with three streams"
         for i in {1..3}
         do 
-            test_stream 1 $local_phone $forward_phone 3 "$cmd" "$cmd2" "$comment"&
+            test_stream 1 $local_phone $forward_phone 3 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P1=$!
-            test_stream 2 $local_ipad $forward_ipad 3 "$cmd" "$cmd2" "$comment"&
+            test_stream 2 $local_ipad $forward_ipad 3 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P2=$!
-            test_stream 3 $local_phone2 $forward_phone2 3 "$cmd" "$cmd2" "$comment"&
+            test_stream 3 $local_phone2 $forward_phone2 3 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P3=$!
             wait $P1 $P2 $P3
         done
