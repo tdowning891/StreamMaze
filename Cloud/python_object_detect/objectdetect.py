@@ -78,14 +78,14 @@ while (timer < 30):
         count_frames_motion = count_frames_motion + 1
 
     # Display the resulting frame
-    cv2.imshow('Face Detection - Cloud', frame)
+    # cv2.imshow('Face Detection - Cloud', frame)
 
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
     # Display the resulting frame
-    cv2.imshow('Face Detection - Cloud', frame)
+    # cv2.imshow('Face Detection - Cloud', frame)
 
     end = time.time()
     timer = round(end-now)
