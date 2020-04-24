@@ -30,21 +30,17 @@ from deepgaze.motion_tracking import ParticleFilter
 import time
 import sys
 
-# from time import process_time
-
-#Set to true if you want to use the webcam instead of the video.
-#In this case you have to provide a valid tamplate, it can be
-#a solid color you want to track or a frame containint your face.
-#Substitute the frame to the default template.png.
-USE_WEBCAM = True
 
 template = cv2.imread('template.png') #Load the image
 
-if(USE_WEBCAM == False):
-    video_capture = cv2.VideoCapture("./cows.avi")
-else:
-    #video_capture = cv2.VideoCapture(0) #Open the webcam
-    video_capture = cv2.VideoCapture(sys.argv[1])
+# This will stop unwanted traceback messages 
+sys.tracebacklimit = 0
+
+#for the ip camera uses input to the script
+video_capture = cv2.VideoCapture(sys.argv[1])
+
+# This will warn the user if the camera cannot be opened
+if not video_capture.isOpened(): raise Exception("Camera could not be opened on the edge system!")
 
 
 # Default resolutions of the frame are obtained.The default resolutions are system dependent.

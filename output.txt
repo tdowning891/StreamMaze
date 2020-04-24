@@ -1,0 +1,2 @@
+Descriptor, Stream ID, Number of Streams, Total Frames Local, Resolution, Frames Edge, Detected Frames Edge, Size of Strea, Size of Detected Stream, Frames Cloud, Detected Frames Cloud
+low 1, 1,887, 1280 x 720 , 841 , 0 , 18148 , 8,Unable to load camera.

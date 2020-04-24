@@ -31,20 +31,19 @@ from deepgaze.motion_tracking import ParticleFilter
 import sys
 import time
 
-#Set to true if you want to use the webcam instead of the video.
+
 
 #Substitute the frame to the default template.png.
-USE_WEBCAM = True
-
 template = cv2.imread('template.png') #Load the image
 
-if(USE_WEBCAM == False):
-    video_capture = cv2.VideoCapture("./out_all_edge.avi")
-elif(USE_WEBCAM == True):
-    #video_capture = cv2.VideoCapture(0) #Open the webcam
-    video_capture = cv2.VideoCapture(sys.argv[1])
-else:
-    print("Sorry that is not a valid paramater please use True or False")
+# This will stop unwanted traceback messages 
+sys.tracebacklimit = 0
+
+#for the ip camera uses inout to the script
+video_capture = cv2.VideoCapture(sys.argv[1])
+
+# This will warn the user if the camera cannot be opened
+if not video_capture.isOpened(): raise Exception("Camera could not be opened on the cloud system!")
 
 # Default resolutions of the frame are obtained.The default resolutions are system dependent.
 # We convert the resolutions from float to integer.

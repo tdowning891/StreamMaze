@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-cloud_key=""~/.ssh/ubuntu_aws.pem""
-cloud="ubuntu@ec2-52-30-255-12.eu-west-1.compute.amazonaws.com"
-edge="parallels@10.211.55.7"
-local_phone="http://admin:admin@192.168.1.83:8554/live"
-local_ipad="http://admin:admin@192.168.1.73:8555/live"
-local_phone2="http://admin:admin@192.168.1.86:8556/live"
 
-forward_phone="http://admin:admin@86.157.196.185:8554/live"
-forward_ipad="http://admin:admin@86.157.196.185:8555/live"
-forward_phone2="http://admin:admin@86.157.196.185:8556/live"
+cloud_key=$(grep cloud_key input.txt | awk '{print $2}')
+cloud=$(grep cloud_ip input.txt | awk '{print $2}')
+edge=$(grep edge_ip input.txt | awk '{print $2}')
+local_stream1=$(grep local_stream2 input.txt | awk '{print $2}')
+local_stream2=$(grep local_stream1 input.txt | awk '{print $2}')
+local_stream3=$(grep local_stream3 input.txt | awk '{print $2}')
+forward_stream1=$(grep forward_stream2 input.txt | awk '{print $2}')
+forward_stream2=$(grep forward_stream1 input.txt | awk '{print $2}')
+forward_stream3=$(grep forward_stream3 input.txt | awk '{print $2}')
 
 setup ()
 {
@@ -43,7 +43,7 @@ test_stream ()
     #     9 = cloud location of output file
     
     #Measure the number of frames captured on local device
-    python3 ./stream_frames.py $2 > frames_captured.txt &
+     python3 ./stream_frames.py $2 > frames_captured.txt &
     P1=$!
     #open tream on the edge
     ssh $edge "docker exec test bash -c '$5 $2 > res$1.txt'" &
@@ -58,10 +58,9 @@ test_stream ()
     frames_captured=$(cat frames_captured.txt)
 
     res=$(ssh $edge "docker exec test bash -c 'cat $6res$1.txt && rm $6res$1.txt'")
-    # res1=$(ssh -X -i $cloud_key $cloud "cat $6res$1.txt && rm $6res$1.txt")
     res1=$(ssh -X -i $cloud_key $cloud "docker exec test bash -c 'cat $9res$1.txt && rm $9res$1.txt'")
-    
-    echo $7 $4, $1,$frames_captured, $res,$res1
+    echo "Descriptor, Stream ID, Number of Streams, Total Frames Local, Resolution, Frames Edge, Detected Frames Edge, Size of Strea, Size of Detected Stream, Frames Cloud, Detected Frames Cloud"  >> output.txt
+    echo $7 $4, $1,$frames_captured, $res,$res1 >> output.txt
 }
 run_test()
 {
@@ -95,16 +94,16 @@ run_test()
 
     for i in $(seq 1 $END);
     do 
-        test_stream 1 $local_phone $forward_phone 1 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"
+        test_stream 1 $local_stream1 $forward_stream1 1 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"
     done 
 
     if(($1 > 1))
     then 
         for i in $(seq 1 $END);
         do 
-            test_stream 1 $local_phone $forward_phone 2 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
+            test_stream 1 $local_stream1 $forward_stream1 2 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P1=$!
-            test_stream 2 $local_ipad $forward_ipad 2 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
+            test_stream 2 $local_stream2 $forward_stream2 2 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P2=$!
             wait $P1 $P2
         done 
@@ -114,11 +113,11 @@ run_test()
     then
         for i in $(seq 1 $END);
         do 
-            test_stream 1 $local_phone $forward_phone 3 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
+            test_stream 1 $local_stream1 $forward_stream1 3 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P1=$!
-            test_stream 2 $local_ipad $forward_ipad 3 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
+            test_stream 2 $local_stream2 $forward_stream2 3 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P2=$!
-            test_stream 3 $local_phone2 $forward_phone2 3 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
+            test_stream 3 $local_stream3 $forward_stream3 3 "$cmd" "$cmd2" "$comment" "$cmd_c" "$cmd2_c"&
             P3=$!
             wait $P1 $P2 $P3
         done
@@ -127,8 +126,12 @@ run_test()
 
 run_all()
 {
+    #remove the out output file, and create a new empty one
+    rm output.txt
+    touch output.txt
+
     #Check for setup / update
-    printf "Would you like to check for updates or setup test enviroment? (Y/N):  "
+    printf "Would you like to check for updates or setup the test environment? (Y/N):  "
     read update
 
     if [ "$update" != "Y" ] && [ "$update" != "N" ]; then
@@ -150,7 +153,7 @@ run_all()
     fi
     
     #Use how many streams?
-    printf "\nPlease Select the number of video streams you want to use for testing(1, 2, 3): "
+    printf "\nPlease Select the number of video streams you want to use for testing (1, 2, 3): "
     read stream_num
     if [ "$stream_num" != "1" ] && [ "$astream_numpp" != "2" ] && [ "$astream_numpp" != "3" ]; then
         printf "Please Select a Valid Input \n"
@@ -166,7 +169,6 @@ run_all()
         return
     fi
    
-
     #add comment to help identify benchmark
     printf "\nPlease add a benchmark Description e.g. Low Light:"
     read comment 
