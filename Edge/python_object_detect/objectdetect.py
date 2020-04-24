@@ -9,14 +9,16 @@ cascPath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 log.basicConfig(filename='webcam.log',level=log.INFO)
 
-# This will stop unwated traceback messages 
+# This will stop unwanted traceback messages 
 sys.tracebacklimit = 0
 
 #for the ip camera uses inout to the script
 video_capture = cv2.VideoCapture(sys.argv[1])
 
 # This will warn the user if the camera cannot be opened
-if not video_capture.isOpened(): raise Exception("Camera could not be opened on the edge system!")
+if not video_capture.isOpened(): 
+    raise Exception("Camera could not be opened on the edge system!")
+    exit()
 
 
 # Default resolutions of the frame are obtained.The default resolutions are system dependent.
