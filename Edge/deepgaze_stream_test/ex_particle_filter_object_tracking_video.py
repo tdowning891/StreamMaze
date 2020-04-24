@@ -36,8 +36,15 @@ template = cv2.imread('template.png') #Load the image
 # This will stop unwanted traceback messages 
 sys.tracebacklimit = 0
 
-#for the ip camera uses input to the script
-video_capture = cv2.VideoCapture(sys.argv[1])
+int myErrorHandler(int status, const char* func_name, const char* err_msg, 
+                   const char* file_name, int line, void*)
+{
+    #for the ip camera uses input to the script
+    video_capture = cv2.VideoCapture(sys.argv[1])
+    return 0;
+}
+
+cvRedirectError(myErrorHandler)
 
 # This will warn the user if the camera cannot be opened
 if not video_capture.isOpened(): raise Exception("Camera could not be opened on the edge system!")
