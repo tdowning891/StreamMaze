@@ -1,9 +1,9 @@
 cloud_key ~/.ssh/ubuntu_aws.pem
 cloud_ip ubuntu@ec2-52-30-255-12.eu-west-1.compute.amazonaws.com
 edge_ip parallels@10.211.55.7
-local_stream1 http://admin:admin@192.168.1.83:8554/live
-local_stream2 http://admin:admin@192.168.1.73:8555/live
+local_stream1 http://admin:admin@192.168.1.83:8555/live
+local_stream2 http://admin:admin@192.168.1.73:8554/live
 local_stream3 http://admin:admin@192.168.1.86:8556/live
-forward_stream1 http://admin:admin@86.157.196.185:8554/live
-forward_stream2 http://admin:admin@86.157.196.185:8555/live
+forward_stream1 http://admin:admin@86.157.196.185:8555/live
+forward_stream2 http://admin:admin@86.157.196.185:8554/live
 forward_stream3 http://admin:admin@86.157.196.185:8556/live

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+printf "\n / ____| |                          |  \/  | \n |(___ | |_ _ __ ___  __ _ _ __ ___ | \  / | __ _ _______  \n \___ \| __| '__/ _ \/ _\` | '_ \` _ \| |\/| |/ _\` |_  / _ \ \n ____) | |_| | |  __/ (_| | | | | | | |  | | (_| |/ /  __/ \n|_____/ \__|_|  \___|\__,_|_| |_| |_|_|  |_|\__,_/___\___|\n\n\n"
 
 cloud_key=$(grep cloud_key input.txt | awk '{print $2}')
 cloud=$(grep cloud_ip input.txt | awk '{print $2}')
@@ -130,8 +131,29 @@ run_all()
     rm output.txt
     touch output.txt
 
+    # Display the warning to the user stating to place information in input file
+    printf "PLEASE INSURE THE CORRECT EDGE, CLOUD & VIDEO STREAM IP ADDRESS ARE STORED WITHIN 'inputs.txt'  \n\n"
+
+
+    # Check if the cloud and edge systems are online
+    test=$(echo $cloud | awk -F '@' '{print $2}')
+    test2=$(echo $edge | awk -F '@' '{print $2}')
+    if nc -z -G 3  $test 22 &> /dev/null; then
+        printf "Cloud Test System Online \n"
+    else
+        echo  "Cloud Test System Offline" 
+        exit 1 
+    fi
+
+    if nc -z -G 3  $test2 22 &> /dev/null; then
+        printf "Edge Test System Online \n"
+    else
+        echo  "Edge Test System Offline" 
+        exit 1 
+    fi
+    
     #Check for setup / update
-    printf "Would you like to check for updates or setup the test environment? (Y/N):  "
+    printf "\n\nWould you like to check for updates or setup the test environment? (Y/N):  "
     read update
 
     if [ "$update" != "Y" ] && [ "$update" != "N" ]; then
