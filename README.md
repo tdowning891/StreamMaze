@@ -2,7 +2,7 @@
 ## Edge vs Cloud Video Streaming Benchmarks
 
 ### How to Run
-navigate to the StreamMaze folder:
+Navigate to the StreamMaze folder:
 ```./run.sh```
 
 ### Dependencies Required on the Local System
@@ -40,7 +40,7 @@ Your public key has been saved in /home/username/.ssh/id_rsa.pub.
 $ ssh-copy-id id@server
 id@server's password: 
 ```
-* To check it has worked, you should login to each system and insure a password is not required.
+* To check it has worked, you should ssh to each system and insure a password is not required.
 
 ### First Time Running StreamMaze or Checking for Updates
 The StreamMaze application will automatically download and run the docker image before pulling the StreamMaze git repository. If the application has been previosuly run it will check the latest version of the docker container and StreamMaze application are used. The user simply needs to respond 'Y' to the following:
@@ -63,21 +63,24 @@ forward_stream3 http://username:password@86.182.174.1:8556/live
 ```
 
 ### Setting Up Video Streams
+Any IP video stream can be used as a test platform, simply provide the IP address as previously detailed. StreamMaze has been tested using "IPCamera" on an IPhone and IPad. A link to th e IPCamera app can be found below:
+```
+https://apps.apple.com/us/app/ipcamera-high-end-networkcam/id570912928
+```
 
 ### Cloud Platform
-* StreamMaze has been tested using an AWS EC2 Ubuntu 18.04 LTS instance.
-* Create an AWS account and create an IAM user with the necessary privileges.
-* Update the local .ssh and .aws with the IAM users credentials (secret access keys) on the user device and Edge Nodes.
-
-AWS documentation can be found at: 
-```https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html```
+StreamMaze has been tested using an AWS EC2 Ubuntu 18.04 LTS instance. For information on how to setup an AWS Instance please see the documentation below:
+```
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html
+```
 
 ### Edge Platform
-* StreamMaze has been tested using an AWS EC2 Ubuntu 18.04 LTS instance.
-* Update the local .aws with the IAM users credentials on the edge Edge Nodes.
-* Update the local .ssh with an `authorized_keys` file, containing the generated public rsa ssh key on the user device. Use ssh or scp to add this file to the .ssh folder.
-
-
-### How to run Motion Detection / Object Detection
-
-
+StreamMaze has been tested using a Ubuntu 18.04 LTS virtual machine. Parallels ans VirtualBox where both used as hypervisors. 
+* VirtualBox Documentation:
+```
+https://www.virtualbox.org/wiki/Documentation
+```
+* Parallels Documentation:
+```
+https://www.parallels.com/uk/products/ras/resources/
+```
