@@ -49,7 +49,18 @@ Would you like to check for updates or setup the test environment? (Y/N):
 Y 
 ```
 ### Specifying the IP Address's for the Edge, Cloud and Video Streams
-
+The IP addresses should be specified within the ```input.txt``` file in the following format:
+```
+cloud_key ~/.ssh/key.pem
+cloud_ip id@server
+edge_ip parallels@10.211.55.7
+local_stream1 http://username:password@192.168.1.1:8554/live
+local_stream2 http://username:password@192.168.1.1:8555/live
+local_stream3 http://username:password@192.168.1.1:8556/live
+forward_stream1 http://username:password@86.182.174.1:8554/live
+forward_stream2 http://username:password@86.182.174.1:8555/live
+forward_stream3 http://username:password@86.182.174.1:8556/live
+```
 
 ### Setting Up Video Streams
 
