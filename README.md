@@ -10,14 +10,20 @@ The local system is required to run a bash and python script.
 
 The bash script will run on any linux based system. The python script using open CV therefor the local system will require both to be installed.
 
-Resources to Install Python:
-```https://www.python.org/downloads/```
-Resources to Install OpenCV: 
-```https://pypi.org/project/opencv-python/```
+* Resources to Install Python:
+```
+https://www.python.org/downloads/
+```
+* Resources to Install OpenCV: 
+```
+https://pypi.org/project/opencv-python/
+```
 
 ### Dependencies Required on the Edge and Cloud Systems
 The Edge and Cloud systems used for testing must be linux based and have docker installed, an install guide for docker can be found below:
-```https://runnable.com/docker/install-docker-on-linux```
+```
+https://runnable.com/docker/install-docker-on-linux
+```
 In order for StreamMaze to function properly passphraseless ssh must be setup. You can use the following steps to do so.
 * Generate a passphraseless SSH key. If you have you have already generated an SSH key you can skip the following step. 
 ```
@@ -38,8 +44,10 @@ id@server's password:
 
 ### First Time Running StreamMaze or Checking for Updates
 The StreamMaze application will automatically download and run the docker image before pulling the StreamMaze git repository. If the application has been previosuly run it will check the latest version of the docker container and StreamMaze application are used. The user simply needs to respond 'Y' to the following:
-```Would you like to check for updates or setup the test environment? (Y/N): \n```
-```Y ```
+```
+Would you like to check for updates or setup the test environment? (Y/N):
+Y 
+```
 ### Specifying the IP Address's for the Edge, Cloud and Video Streams
 
 
