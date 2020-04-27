@@ -20,23 +20,24 @@ The Edge and Cloud systems used for testing must be linux based and have docker 
 ```https://runnable.com/docker/install-docker-on-linux```
 In order for StreamMaze to function properly passphraseless ssh must be setup. You can use the following steps to do so.
 * Generate a passphraseless SSH key. If you have you have already generated an SSH key you can skip the following step. 
-```$ ssh-keygen -t rsa -b 2048```
-```Generating public/private rsa key pair.```
-```Enter file in which to save the key (/home/username/.ssh/id_rsa): ```
-```Enter passphrase (empty for no passphrase): ```
+```$ ssh-keygen -t rsa -b 2048 \n```
+```Generating public/private rsa key pair. \n```
+```Enter file in which to save the key (/home/username/.ssh/id_rsa): \n```
+```Enter passphrase (empty for no passphrase): \n```
 ```Enter same passphrase again: ```
-```Your identification has been saved in /home/username/.ssh/id_rsa.```
-```Your public key has been saved in /home/username/.ssh/id_rsa.pub.```
+```Your identification has been saved in /home/username/.ssh/id_rsa.\n```
+```Your public key has been saved in /home/username/.ssh/id_rsa.pub.\n```
 * Copy your SSH key to both the Edge and Cloud system.
 ```$ ssh-copy-id id@server```
 ```id@server's password: ```
 * To check it has worked, you should login to each system and insure a password is not required.
 
 ### First Time Running StreamMaze or Checking for Updates
-The StreamMaze application will automatically download and run the docker image before pulling the StreamMaze git repository. If the application has been previosuly run it will check the latest version of the docker comainer and StreamMaze application are used. The user simply needs to respond 'Y' to the following:
-```Would you like to check for updates or setup the test environment? (Y/N):```
+The StreamMaze application will automatically download and run the docker image before pulling the StreamMaze git repository. If the application has been previosuly run it will check the latest version of the docker container and StreamMaze application are used. The user simply needs to respond 'Y' to the following:
+```Would you like to check for updates or setup the test environment? (Y/N): \n```
 ```Y ```
 ### Specifying the IP Address's for the Edge, Cloud and Video Streams
+
 
 ### Setting Up Video Streams
 
