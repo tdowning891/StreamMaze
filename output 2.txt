@@ -1,0 +1,2 @@
+Descriptor, Stream ID, Number of Streams, Total Frames Local, Resolution, Frames Edge, Detected Frames Edge, Size of Strea, Size of Detected Stream, Frames Cloud, Detected Frames Cloud
+low, 1, 1,887, 1920 x 1080 , 343 , 343 , 8424 , 5980,62 , 62

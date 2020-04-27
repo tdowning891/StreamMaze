@@ -1,0 +1,4 @@
+Descriptor, Stream ID, Number of Streams, Total Frames Local, Resolution, Frames Edge, Detected Frames Edge, Size of Strea, Size of Detected Stream, Frames Cloud, Detected Frames Cloud, Edge Latency, Cloud Latency
+1, 1, 1,286, 1920 x 1080 , 200 , 200 , 8424 , 5980,4 , 4, 1402, 27659
+1, 2, 1,139, 1920 x 1080 , 85 , 85 , 8424 , 5980,2 , 2, 3031, 24498
+1, 2, 2,139, 1080 x 1920 , 93 , 81 , 8424 , 5980,3 , 2, 2041, 33294

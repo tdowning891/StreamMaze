@@ -4,7 +4,9 @@ import logging as log
 import datetime as dt
 import time
 from time import sleep
+import os
 
+# Specify the haar cascade classifier to be used 
 cascPath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 log.basicConfig(filename='webcam.log',level=log.INFO)
@@ -12,7 +14,7 @@ log.basicConfig(filename='webcam.log',level=log.INFO)
 # This will stop unwanted traceback messages 
 sys.tracebacklimit = 0
 
-#for the ip camera uses inout to the script
+#for the ip camera uses input to the script
 video_capture = cv2.VideoCapture(sys.argv[1])
 
 # This will warn the user if the camera cannot be opened
@@ -41,6 +43,7 @@ count_frames_motion = 0
 timer = 0
 now=time.time()
 
+# The while loop and timer vairable are used to run the stream benchmark for exactly 30s 
 while (timer < 30):
     if not video_capture.isOpened():
         print('Unable to load camera.')
@@ -57,12 +60,15 @@ while (timer < 30):
     out_all.write(frame)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+    # Setup the object 
     objects = faceCascade.detectMultiScale(
         gray,
         scaleFactor=1.1,
         minNeighbors=5,
         minSize=(30, 30) 
     )
+
+    # If there is at least one object detected 
     if len(objects) > 0:
 
         # Draw a rectangle around the objects
@@ -79,16 +85,7 @@ while (timer < 30):
         #count the number of frames showing motion
         count_frames_motion = count_frames_motion + 1
 
-    # Display the resulting frame
-    # cv2.imshow('Face Detection - Edge', frame)
-
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-    # Display the resulting frame
-    # cv2.imshow('Face Detection - Edge', frame)
-
+    # Getting the current time on timer
     end = time.time()
     timer = round(end-now)
 
@@ -98,10 +95,13 @@ out_all.release()
 out_motion.release()
 cv2.destroyAllWindows()
 
-import os
-
+# Get the size of the entire stream 
 command = "du ~/StreamMaze/Edge/python_object_detect/out_all.avi | awk '{printf $1}'"
 out_all = os.popen(command).read()
+
+# Get the size of the detected stream
 command = "du ~/StreamMaze/Edge/python_object_detect/out_motion.avi | awk '{printf $1}'"
 out_motion = os.popen(command).read()
+
+# Print the collected Metrics
 print(res_h,"x",res_v,",",count_frames_all,",",count_frames_motion, ",", out_all, ",", out_motion)
